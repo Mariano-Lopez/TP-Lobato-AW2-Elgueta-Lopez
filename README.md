@@ -1,2 +1,2 @@
-# AW1-pizzerialobato
-Proyecto de Aplicaciones Web 1 
+# AW2-pizzerialobato
+Proyecto de Aplicaciones Web 2 
