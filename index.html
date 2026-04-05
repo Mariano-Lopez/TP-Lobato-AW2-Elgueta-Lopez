@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="/recursos/imagenes/iconos-logo/logoLobatoFavicon48px.ico"
+      type="image/x-icon"
+    />
+    <link rel="stylesheet" href="/recursos/css/index.css" />
+    <script type="module" src="./recursos/js/inicio/index.js"></script>
+    <title>Pizzería Lobato | Inicio</title>
+  </head>
+
+  <body>
+    <header id="cabecera-principal" role="banner" class="cabecera-principal">
+      <a class="logo" href="/index.html">
+        <img
+          src="/recursos/imagenes/iconos-logo/lobato-logo.webp"
+          alt="Lobato logo"
+          width="100px"
+        />
+      </a>
+
+      <button class="abrir-menu"><i class="fa-solid fa-bars"></i></button>
+
+      <nav id="nav-principal" class="nav-principal">
+        <button id="cerrar-menu" class="cerrar-menu">
+          <i class="fa-regular fa-circle-xmark"></i>
+        </button>
+        <ul class="nav-list">
+          <li>
+            <a href="/index.html"> Inicio </a>
+          </li>
+          <li class="separador">|</li>
+          <li>
+            <a href="/carta.html"> Carta </a>
+          </li>
+          <li class="separador">|</li>
+          <li>
+            <a href="/contacto.html"> Contacto </a>
+          </li>
+          <li class="separador">|</li>
+          <li>
+            <a href="/sobre-nosotros.html"> Sobre nosotros </a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="contenido-principal">
+      <section class="seccion-hero">
+        <div class="contenedor-overlay">
+          <div class="hijo-overlay">
+            <address>
+              <a
+                class="card-informacion"
+                href="https://maps.app.goo.gl/NFWnuSLrCEap7pHw9?g_st=aw"
+                target="_blank"
+              >
+                <i class="fa-solid fa-location-dot" alt="Ubicación"></i>
+                Av. Emilio Castro 669
+              </a>
+            </address>
+            <time>
+              <a class="card-informacion">
+                <i class="fa-regular fa-clock" alt="Horarios"></i>
+                Martes a Domingo de 13hs a 00 hs (Feriados de 13hs a 23hs)
+              </a>
+            </time>
+          </div>
+          <menu class="hijo-overlay">
+            <li>
+              <a id="boton-promos" class="card-informacion">
+                <i class="fa-brands fa-cash-app" alt="Promociones"></i>
+                <div class="boton-rojo">PROMOS</div>
+              </a>
+            </li>
+            <li>
+              <a id="boton-carta" class="card-informacion">
+                <i class="fa-solid fa-utensils" alt="Carta de comidas"></i>
+                <div  class="boton-rojo">CARTA</div>
+              </a>
+            </li>
+          </menu>
+        </div>
+      </section>
+
+      <img
+        class="linea-divisora"
+        src="/recursos/imagenes/svg/lineaDivisoria.svg"
+        alt="Línea divisoria roja"
+      />
+
+      <section class="seccion-principal">
+        <h2>Algunos de nuestros productos</h2>
+        <div class="contenedor-productos" id="contenedor-productos"></div>
+        <button id="boton-ver-productos" class="boton-productos">
+          Ver todos los productos
+        </button>
+      </section>
+
+      <img
+        class="linea-divisora"
+        src="/recursos/imagenes/svg/lineaDivisoria.svg"
+        alt="Línea divisoria roja"
+      />
+
+      <section class="seccion-principal">
+        <h2>Algunas de nuestras promos vigentes</h2>
+        <div class="contenedor-productos" id="contenedor-promos"></div>
+
+        <button class="boton-productos" id="ver-mas-promos">Ver todos</button>
+      </section>
+      <img
+        class="linea-divisora"
+        src="/recursos/imagenes/svg/lineaDivisoria.svg"
+        alt="Línea divisoria roja"
+      />
+
+      <section class="seccion-opiniones">
+        <h2>La opinión de quienes nos eligen</h2>
+        <div class="iframes-opiniones">
+          <iframe
+            id="iframe-calificacion"
+            src="https://widgets.sociablekit.com/google-reviews/iframe/25603516"
+            frameborder="0"
+            width="49%"
+            height="600px"
+          ></iframe>
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3282.1374327392396!2d-58.516879624257705!3d-34.65123197293723!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcc8541d0ab32f%3A0x846d801ab604bf1b!2sLobato!5e0!3m2!1ses-419!2sar!4v1758462474472!5m2!1ses-419!2sar"
+            width="49%"
+            height="600px"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </section>
+      <img
+        class="linea-divisora"
+        src="/recursos/imagenes/svg/lineaDivisoria.svg"
+        alt="Línea divisoria roja"
+      />
+    </main>
+
+    <footer class="pie-principal">
+      <h3>¡Seguinos en nuestras redes sociales!</h3>
+      <section>
+        <a
+          class="social instagram"
+          href="https://www.instagram.com/lobatopizzeria?igsh=MTZ3am5tajNsdnUxaQ=="
+          target="_blank"
+        >
+          <i class="fa-brands fa-square-instagram" alt="Instagram"></i>
+        </a>
+        <a
+          class="social facebook"
+          href="https://www.facebook.com/pizzerialobato"
+          target="_blank"
+        >
+          <i class="fa-brands fa-facebook" alt="Facebook"></i>
+        </a>
+        <a
+          class="social whatsapp"
+          href="https://wa.me/5401137931972"
+          target="_blank"
+        >
+          <i class="fa-brands fa-whatsapp" alt="Whatsapp"></i>
+        </a>
+      </section>
+      <p>2025 © Pizzería Lobato. Todos los derechos reservados.</p>
+    </footer>
+  </body>
+  <script
+    src="https://kit.fontawesome.com/2f405d4e4f.js"
+    crossorigin="anonymous"
+  ></script>
+</html>
