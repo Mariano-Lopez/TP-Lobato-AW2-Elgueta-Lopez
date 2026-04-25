@@ -8,6 +8,8 @@ import {
 } from '../funciones.js'
 import {API_PRODUCTOS_URL, API_PROMOCIONES_URL} from '../config.js'
 
+const tiro_PauloDiaz = true
+
 const $cabecera = document.getElementById('cabecera-principal')
 
 const $contenedorPizzas = document.querySelector('#contenedor-pizzas')
