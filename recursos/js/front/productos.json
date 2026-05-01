@@ -1,0 +1,158 @@
+{
+    "pizzas": [
+        {
+            "id": 1,
+            "nombre": "Mozzarella",
+            "precio": 11000,
+            "imagen": {
+                "src": "imagenes/productos/Pizza-mozzarella.webp",
+                "alt": "Pizza de Mozzarella"
+            },
+            "categoria": "Pizza"
+        },
+        {
+            "id": 2,
+            "nombre": "Calabresa",
+            "precio": 13000,
+            "imagen": {
+                "src": "imagenes/productos/Pizza-calabresa.webp",
+                "alt": "Pizza Calabresa"
+            },
+            "categoria": "Pizza"
+        },
+        {
+            "id": 3,
+            "nombre": "Napolitana",
+            "precio": 14000,
+            "imagen": {
+                "src": "imagenes/productos/Pizza-napolitana.webp",
+                "alt": "Pizza Napolitana"
+            },
+            "categoria": "Pizza"
+        },
+        {
+            "id": 4,
+            "nombre": "4 Quesos",
+            "precio": 15000,
+            "imagen": {
+                "src": "imagenes/productos/pizza-4_quesos.webp",
+                "alt": "Pizza 4 Quesos"
+            },
+            "categoria": "Pizza"
+        },
+        {
+            "id": 5,
+            "nombre": "Mixta",
+            "precio": 15000,
+            "imagen": {
+                "src": "imagenes/productos/Pizza-mixta.webp",
+                "alt": "Pizza Mixta"
+            },
+            "categoria": "Pizza"
+        }
+    ],
+    "empanadas": [
+        {
+            "id": 1,
+            "nombre": "Carne",
+            "precio": 1250,
+            "imagen": {
+                "src": "imagenes/productos/Empanada-criolla.webp",
+                "alt": "Empanada de Carne"
+            },
+            "categoria": "Empanada"
+        },
+        {
+            "id": 2,
+            "nombre": "Pollo",
+            "precio": 1250,
+            "imagen": {
+                "src": "imagenes/productos/Empanada-pollo.webp",
+                "alt": "Empanada de Pollo"
+            },
+            "categoria": "Empanada"
+        },
+        {
+            "id": 3,
+            "nombre": "Verdura",
+            "precio": 1300,
+            "imagen": {
+                "src": "imagenes/productos/Empanada-verdura.webp",
+                "alt": "Empanada de Verdura"
+            },
+            "categoria": "Empanada"
+        },
+        {
+            "id": 4,
+            "nombre": "Jamón y Queso",
+            "precio": 1350,
+            "imagen": {
+                "src": "imagenes/productos/Empanada-jyq.webp",
+                "alt": "Empanada de Jamón y Queso"
+            },
+            "categoria": "Empanada"
+        }
+    ],
+    "bebidas": [
+        {
+            "id": 1,
+            "nombre": "Coca Cola 1.5lt",
+            "precio": 2500,
+            "imagen": {
+                "src": "imagenes/productos/CocaComun.webp",
+                "alt": "Coca Cola Común de 1.5lt"
+            },
+            "categoria": "Bebida"
+        },
+        {
+            "id": 2,
+            "nombre": "Coca Cola Zero 1.5lt",
+            "precio": 2600,
+            "imagen": {
+                "src": "imagenes/productos/CocaZero.webp",
+                "alt": "Coca cola Zero de 1.5lt"
+            },
+            "categoria": "Bebida"
+        },
+        {
+            "id": 3,
+            "nombre": "Sprite 1.5lt",
+            "precio": 2000,
+            "imagen": {
+                "src": "imagenes/productos/Sprite.webp",
+                "alt": "Sprite de 1.5lt"
+            },
+            "categoria": "Bebida"
+        },
+        {
+            "id": 4,
+            "nombre": "Fanta 1.5lt",
+            "precio": 2000,
+            "imagen": {
+                "src": "imagenes/productos/Fanta.webp",
+                "alt": "Fanta de 1.5lt"
+            },
+            "categoria": "Bebida"
+        },
+        {
+            "id": 5,
+            "nombre": "Lata Quilmes 473ml",
+            "precio": 2300,
+            "imagen": {
+                "src": "imagenes/productos/lata-quilmes.webp",
+                "alt": "Lata Quilmes de 473ml"
+            },
+            "categoria": "Bebida"
+        },
+        {
+            "id": 6,
+            "nombre": "Schneider 710ml",
+            "precio": 2800,
+            "imagen": {
+                "src": "imagenes/productos/Schneider.webp",
+                "alt": "Schneider 710ml"
+            },
+            "categoria": "Bebida"
+        }
+    ]
+}
