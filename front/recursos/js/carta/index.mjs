@@ -110,9 +110,3 @@ btnLimpiar.addEventListener('click', () => {
   document.querySelector('.form-busqueda').reset()
   limpiarResultados()
 })
-
-$menuHamburguesa.addEventListener('click', () => {
-  const $navegacion = document.querySelector('.menu-mobile')
-  $navegacion.classList.toggle('mostrar-menu')
-  $menuHamburguesa.style.display = 'block'
-})

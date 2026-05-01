@@ -8,16 +8,6 @@ const app = express()
 
 app.use(express.static(path.resolve('front')))
 
-
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve('front/index.html'))
-})
-
-
-app.get('/carta', (req, res) => {
-  res.sendFile(path.resolve('front/carta.html'))
-})
-
 app.listen(puerto, () => {
   console.log(`Servidor escuchando en http://localhost:${puerto}`)
 })
