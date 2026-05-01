@@ -5,7 +5,7 @@
         "nombre": "Dos Pizzas Mozzarella",
         "precio": 16000,
         "imagen": {
-            "src": "./recursos/imagenes/productos/dos-pizzas-mozzarella.webp",
+            "src": "./recursos/js/front/imagenes/productos/dos-pizzas-mozzarella.webp",
             "alt": "Dos Pizzas Mozzarella"
         },
         "categoria": "Promocion"
@@ -15,7 +15,7 @@
         "nombre": "Coca 1.5lt + Pizza a elección",
         "precio": 14500,
         "imagen": {
-            "src": "./recursos/imagenes/productos/promo-coca-pizza.webp",
+            "src": "./recursos/js/front/imagenes/productos/promo-coca-pizza.webp",
             "alt": "Coca Cola de 1.5lt y Pizza"
         },
         "categoria": "Promocion"
@@ -25,7 +25,7 @@
         "nombre": "1/2 docena de Empanadas de JyQ + Pizza 4 Quesos",
         "precio": 18500,
         "imagen": {
-            "src": "./recursos/imagenes/productos/promo-pizza4q-jyq.webp",
+            "src": "./recursos/js/front/imagenes/productos/promo-pizza4q-jyq.webp",
             "alt": "Pizza 4 Quesos + Empanadas de jamon y queso"
         },
         "categoria": "Promocion"
@@ -35,7 +35,7 @@
         "nombre": "Coca 1.5lt + 1/2 docena de Empanadas a elección",
         "precio": 10500,
         "imagen": {
-            "src": "./recursos/imagenes/productos/promo-coca-empanadas.webp",
+            "src": "./recursos/js/front/imagenes/productos/promo-coca-empanadas.webp",
             "alt": "Coca Cola de 1.5lt y Empanadas"
         },
         "categoria": "Promocion"
@@ -45,7 +45,7 @@
         "nombre": "2 latas de cerveza + 1/2 docena de Empanadas a elección",
         "precio": 13500,
         "imagen": {
-            "src": "./recursos/imagenes/productos/promo-empanadas-cerveza.webp",
+            "src": "./recursos/js/front/imagenes/productos/promo-empanadas-cerveza.webp",
             "alt": "2 latas de cerveza y Empanadas"
         },
         "categoria": "Promocion"
@@ -55,7 +55,7 @@
         "nombre": "1/2 de Empanadas de Carne + 1/2 de Empanadas de Verdura",
         "precio": 15000,
         "imagen": {
-            "src": "./recursos/imagenes/productos/promo-carne-verdura.webp",
+            "src": "./recursos/js/front/imagenes/productos/promo-carne-verdura.webp",
             "alt": "Empanada de Carne y verdura"
         },
         "categoria": "Promocion"

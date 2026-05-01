@@ -5,7 +5,7 @@
             "nombre": "Mozzarella",
             "precio": 11000,
             "imagen": {
-                "src": "./recursos/imagenes/productos/Pizza-mozzarella.webp",
+                "src": "imagenes/productos/Pizza-mozzarella.webp",
                 "alt": "Pizza de Mozzarella"
             },
             "categoria": "Pizza"
@@ -15,7 +15,7 @@
             "nombre": "Calabresa",
             "precio": 13000,
             "imagen": {
-                "src": "./recursos/imagenes/productos/Pizza-calabresa.webp",
+                "src": "imagenes/productos/Pizza-calabresa.webp",
                 "alt": "Pizza Calabresa"
             },
             "categoria": "Pizza"
@@ -25,7 +25,7 @@
             "nombre": "Napolitana",
             "precio": 14000,
             "imagen": {
-                "src": "./recursos/imagenes/productos/Pizza-napolitana.webp",
+                "src": "imagenes/productos/Pizza-napolitana.webp",
                 "alt": "Pizza Napolitana"
             },
             "categoria": "Pizza"
@@ -35,7 +35,7 @@
             "nombre": "4 Quesos",
             "precio": 15000,
             "imagen": {
-                "src": "./recursos/imagenes/productos/pizza-4_quesos.webp",
+                "src": "imagenes/productos/pizza-4_quesos.webp",
                 "alt": "Pizza 4 Quesos"
             },
             "categoria": "Pizza"
@@ -45,7 +45,7 @@
             "nombre": "Mixta",
             "precio": 15000,
             "imagen": {
-                "src": "./recursos/imagenes/productos/Pizza-mixta.webp",
+                "src": "imagenes/productos/Pizza-mixta.webp",
                 "alt": "Pizza Mixta"
             },
             "categoria": "Pizza"
@@ -57,7 +57,7 @@
             "nombre": "Carne",
             "precio": 1250,
             "imagen": {
-                "src": "./recursos/imagenes/productos/Empanada-criolla.webp",
+                "src": "imagenes/productos/Empanada-criolla.webp",
                 "alt": "Empanada de Carne"
             },
             "categoria": "Empanada"
@@ -67,7 +67,7 @@
             "nombre": "Pollo",
             "precio": 1250,
             "imagen": {
-                "src": "./recursos/imagenes/productos/Empanada-pollo.webp",
+                "src": "imagenes/productos/Empanada-pollo.webp",
                 "alt": "Empanada de Pollo"
             },
             "categoria": "Empanada"
@@ -77,7 +77,7 @@
             "nombre": "Verdura",
             "precio": 1300,
             "imagen": {
-                "src": "./recursos/imagenes/productos/Empanada-verdura.webp",
+                "src": "imagenes/productos/Empanada-verdura.webp",
                 "alt": "Empanada de Verdura"
             },
             "categoria": "Empanada"
@@ -87,7 +87,7 @@
             "nombre": "Jamón y Queso",
             "precio": 1350,
             "imagen": {
-                "src": "./recursos/imagenes/productos/Empanada-jyq.webp",
+                "src": "imagenes/productos/Empanada-jyq.webp",
                 "alt": "Empanada de Jamón y Queso"
             },
             "categoria": "Empanada"
@@ -99,7 +99,7 @@
             "nombre": "Coca Cola 1.5lt",
             "precio": 2500,
             "imagen": {
-                "src": "./recursos/imagenes/productos/CocaComun.webp",
+                "src": "imagenes/productos/CocaComun.webp",
                 "alt": "Coca Cola Común de 1.5lt"
             },
             "categoria": "Bebida"
@@ -109,7 +109,7 @@
             "nombre": "Coca Cola Zero 1.5lt",
             "precio": 2600,
             "imagen": {
-                "src": "./recursos/imagenes/productos/CocaZero.webp",
+                "src": "imagenes/productos/CocaZero.webp",
                 "alt": "Coca cola Zero de 1.5lt"
             },
             "categoria": "Bebida"
@@ -119,7 +119,7 @@
             "nombre": "Sprite 1.5lt",
             "precio": 2000,
             "imagen": {
-                "src": "./recursos/imagenes/productos/Sprite.webp",
+                "src": "imagenes/productos/Sprite.webp",
                 "alt": "Sprite de 1.5lt"
             },
             "categoria": "Bebida"
@@ -129,7 +129,7 @@
             "nombre": "Fanta 1.5lt",
             "precio": 2000,
             "imagen": {
-                "src": "./recursos/imagenes/productos/Fanta.webp",
+                "src": "imagenes/productos/Fanta.webp",
                 "alt": "Fanta de 1.5lt"
             },
             "categoria": "Bebida"
@@ -139,7 +139,7 @@
             "nombre": "Lata Quilmes 473ml",
             "precio": 2300,
             "imagen": {
-                "src": "./recursos/imagenes/productos/lata-quilmes.webp",
+                "src": "imagenes/productos/lata-quilmes.webp",
                 "alt": "Lata Quilmes de 473ml"
             },
             "categoria": "Bebida"
@@ -149,7 +149,7 @@
             "nombre": "Schneider 710ml",
             "precio": 2800,
             "imagen": {
-                "src": "./recursos/imagenes/productos/Schneider.webp",
+                "src": "imagenes/productos/Schneider.webp",
                 "alt": "Schneider 710ml"
             },
             "categoria": "Bebida"
