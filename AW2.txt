@@ -1,0 +1,5 @@
+npm i -g pnpm
+
+pn i
+
+pn add dotenv
