@@ -1,5 +1,6 @@
 import pool from '../../bbdd/conexion-bd.mjs'
 
+// GET
 export async function obtenerTodos(){
     const resultado = await pool.query('SELECT * FROM productos') // devuelve promesa
     
@@ -15,15 +16,21 @@ export async function obtenerUno(id) {
     return resultado.rows
 }
 
+// POST
+// export async function crearUno(nom, pre, cat) {
 
-export async function crearUno(nom, pre, cat) {
+//     const resultado = await pool.query('INSERT INTO productos(nombre, precio, categoria) VALUES($1, $2, $3) RETURNING id, nombre, precio, categoria', [nom, pre, cat])
+
+//     return resultado.rows
+// }
+
+export async function crearUno1(datos) {
+    const {nom, pre, cat} = datos //<-- Asignacion desestructurada
 
     const resultado = await pool.query('INSERT INTO productos(nombre, precio, categoria) VALUES($1, $2, $3) RETURNING id, nombre, precio, categoria', [nom, pre, cat])
-
+    
     return resultado.rows
 }
-
-
 
 
 

@@ -1,6 +1,6 @@
 import express from 'express'
+import path from 'node:path'
 import './iniciar.env.mjs'
-//import path from 'path'
 import rutasModuloProductos from './modulos/productos/rutas.productos.mjs'
 
 //Variables de entorno 
@@ -11,8 +11,20 @@ import rutasModuloProductos from './modulos/productos/rutas.productos.mjs'
 const puerto = process.env.puerto || 3000
 
 const app = express()
-app.use(express.json())
+
+// app.use(express.json())
+
 app.use(rutasModuloProductos)
+
+
+// Front Web
+app.use(express.static(path.resolve('./publico')))
+
+// Vinculamos el front
+app.use('/admin', express.static(path.resolve('./front-crud')))
+
+// Configuramos carpeta para servir achivos
+app.use('/archivos', express.static(path.resolve('./archivos')))
 
 //app.use(express.static(path.resolve('front')))
 
