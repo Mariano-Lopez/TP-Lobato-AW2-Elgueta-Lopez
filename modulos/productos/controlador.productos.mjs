@@ -10,11 +10,16 @@ const subirArchivo = multer({
 // Configuramos .single
 const manejarArchivo = subirArchivo.single('archivo') //<-- Devuelve una funcion
 
+export async function obtenerCarta(req, res){
+    const respuesta = await modelo.obtenerCarta()
+
+    res.json(respuesta)
+}
 
 // GET
 export async function obtenerTodos(req, res){
     // Obtener consulta a BD desde capa modelo
-    const respuesta = await modelo.obtenerTodos()
+    const respuesta = await modelo.obtenerTodos(req.params.categoria)
 
     // La respuesta tiene todos los datos de la consulta
     const respuestaDatos = respuesta.rows
@@ -31,8 +36,9 @@ export async function obtenerTodos(req, res){
 // GET
 export async function obtenerUno(req, res) {
     const id = req.params.id
+    const categoria = req.params.categoria
 
-    const producto = await modelo.obtenerUno(id)
+    const producto = await modelo.obtenerUno(id, categoria)
 
     //const respuesta = 
     console.log('--------------------------------------')
@@ -68,7 +74,7 @@ export async function crearUno(req, res) {
             // imagen: req.file.originalname
         }
 
-        const respuesta = await modelo.crearUno(datos)
+        const respuesta = await modelo.crearUno(datos, req.body.categoria)
         // crearUno(datos)
 
         res.status(201).json({mensaje: "Registro creado"})
@@ -77,8 +83,9 @@ export async function crearUno(req, res) {
 
 export async function borrarUno(req, res){
     const id = req.params.id
+    const categoria = req.params.categoria
 
-    const producto = await modelo.borrarUno(id)
+    const producto = await modelo.borrarUno(id, categoria)
 
     if (producto != null){
         res.json({mensaje: 'Producto eliminado correctamente.'})
@@ -90,8 +97,9 @@ export async function borrarUno(req, res){
 
 export async function actualizarUno(req, res) {
     const id = req.params.id
+    const categoria = req.params.categoria
 
-    const producto = await modelo.actualizarUno(id, req.body)
+    const producto = await modelo.actualizarUno(id, req.body, categoria)
 
     if (producto != null){
         res.json({mensaje: 'Producto actualizado correctamente.'})

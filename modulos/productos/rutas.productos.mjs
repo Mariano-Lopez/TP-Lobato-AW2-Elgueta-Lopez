@@ -3,14 +3,26 @@ import * as controlador from './controlador.productos.mjs'
 
 const rutasProductos = new Router()
 
-rutasProductos.get('/api/v1/productos', controlador.obtenerTodos)
+// Obtener toda la carta (todos los productos)
+rutasProductos.get('/api/v1/productos', controlador.obtenerCarta)
 
-rutasProductos.get('/api/v1/productos/:id', controlador.obtenerUno)
+// Obtener todos los productos de una categoria
+rutasProductos.get('/api/v1/productos/:categoria', controlador.obtenerTodos)
 
-rutasProductos.post('/api/v1/productos', controlador.crearUno)
+// Obtener un producto por id, en una categoria
+rutasProductos.get('/api/v1/productos/:categoria/:id', controlador.obtenerUno)
 
-rutasProductos.delete('/api/v1/productos/:id', controlador.borrarUno)
+// Crear un producto, para una categoria
+rutasProductos.post('/api/v1/productos/:categoria', controlador.crearUno)
 
-rutasProductos.put('/api/v1/productos/:id', controlador.actualizarUno)
+// Borrar un producto, de una categoria
+rutasProductos.delete('/api/v1/productos/:categoria/:id', controlador.borrarUno)
+
+// Actualizar un producto, de una categoria
+rutasProductos.put('/api/v1/productos/:categoria/:id', controlador.actualizarUno)
+
+//
+
+
 
 export default rutasProductos
