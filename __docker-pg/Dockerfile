@@ -1,5 +1,5 @@
 FROM postgres:latest
 
-COPY tienda.sql /docker-entrypoint-initdb.d/
+COPY carta.sql /docker-entrypoint-initdb.d/
 
 EXPOSE 5432

@@ -12,13 +12,15 @@ const puerto = process.env.puerto || 3000
 
 const app = express()
 
-// app.use(express.json())
+// Agregar estos middlewares ANTES de las rutas
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 app.use(rutasModuloProductos)
 
 
 // Front Web
-app.use(express.static(path.resolve('./publico')))
+app.use(express.static(path.resolve('./front')))
 
 // Vinculamos el front
 app.use('/admin', express.static(path.resolve('./front-crud')))

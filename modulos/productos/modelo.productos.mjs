@@ -16,39 +16,42 @@ export async function obtenerUno(id) {
     return resultado.rows
 }
 
-// POST
-// export async function crearUno(nom, pre, cat) {
-
-//     const resultado = await pool.query('INSERT INTO productos(nombre, precio, categoria) VALUES($1, $2, $3) RETURNING id, nombre, precio, categoria', [nom, pre, cat])
-
-//     return resultado.rows
-// }
-
-export async function crearUno1(datos) {
-    const {nom, pre, cat} = datos //<-- Asignacion desestructurada
-
-    const resultado = await pool.query('INSERT INTO productos(nombre, precio, categoria) VALUES($1, $2, $3) RETURNING id, nombre, precio, categoria', [nom, pre, cat])
+export async function crearUno(datos) {
+    const resultado = await pool.query('INSERT INTO productos(nombre, precio, categoria) VALUES($1, $2, $3) RETURNING id, nombre, precio, categoria', [datos.nombre, datos.precio, datos.categoria])
     
     return resultado.rows
 }
 
 
+export async function borrarUno(id) {
+    const idProducto = Number(id)
 
+    const resultado = await pool.query('SELECT * FROM productos WHERE id =$1', [idProducto])
 
+    if(resultado.rows.length === 0){
+        
+        return null
+    }
+    else{
+        await pool.query('DELETE FROM productos WHERE id =$1', [idProducto])
+    }
 
-
-
-
-
-
-
-
-
-
-export async function actualizarUno() {
-    
+    return resultado.rows
 }
 
-export async function borrarUno() {
-    
+export async function actualizarUno(id, datos) {
+    const idProducto = Number(id)
+    console.log('M - Linea 44' + idProducto)
+
+    const resultado = await pool.query('SELECT * FROM productos WHERE id =$1', [idProducto])
+    console.log('M - Linea 47' + resultado)
+
+    if(resultado.rows.length === 0){
+        return null
+    }
+    else{
+        await pool.query('UPDATE productos SET nombre=$1, precio=$2, categoria=$3 WHERE id =$4', [datos.nombre, datos.precio, datos.categoria, idProducto])
+    }
+
+    return resultado.rows
 }

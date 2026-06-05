@@ -48,16 +48,7 @@ export async function obtenerUno(req, res) {
 
 }
 
-//POST
-// export async function crearUno(req, res) {
-    
-//     const {nombre, precio, categoria} = req.body
-//     const productos = await modelo.crearUno(nombre, precio, categoria)
-//     console.log(productos)
-//     res.status(201).json({mensaje: "Producto dado de alta", productos: productos.rows})
-// }
-
-export async function crearUno1(req, res) {
+export async function crearUno(req, res) {
     // Manejamos el archivo 
     manejarArchivo(req, res, async (error)=> {
         // Si hay error
@@ -71,15 +62,45 @@ export async function crearUno1(req, res) {
         console.log(req.body) // <-- demás datos
 
         const datos = {
-            producto: req.body.nombre,
+            nombre: req.body.nombre,
             precio: req.body.precio,
-            imagen: req.file.originalname
+            categoria: req.body.categoria
+            // imagen: req.file.originalname
         }
 
-        const respuesta = await modelo.crearUno1(datos)
+        const respuesta = await modelo.crearUno(datos)
         // crearUno(datos)
 
         res.status(201).json({mensaje: "Registro creado"})
     })
+}
+
+export async function borrarUno(req, res){
+    const id = req.params.id
+
+    const producto = await modelo.borrarUno(id)
+
+    if (producto != null){
+        res.json({mensaje: 'Producto eliminado correctamente.'})
+    }
+    else{
+        res.status(500).json({mensaje: 'Producto no encontrado.'})
+    }
+}
+
+export async function actualizarUno(req, res) {
+    const id = req.params.id
+
+    const producto = await modelo.actualizarUno(id, req.body)
+
+    if (producto != null){
+        res.json({mensaje: 'Producto actualizado correctamente.'})
+    }
+    else{
+        res.status(500).json({mensaje: 'Producto no encontrado.'})
+    }
 
 }
+
+
+

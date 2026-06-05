@@ -7,6 +7,10 @@ rutasProductos.get('/api/v1/productos', controlador.obtenerTodos)
 
 rutasProductos.get('/api/v1/productos/:id', controlador.obtenerUno)
 
-rutasProductos.post('/api/v1/productos', controlador.crearUno1)
+rutasProductos.post('/api/v1/productos', controlador.crearUno)
+
+rutasProductos.delete('/api/v1/productos/:id', controlador.borrarUno)
+
+rutasProductos.put('/api/v1/productos/:id', controlador.actualizarUno)
 
 export default rutasProductos
