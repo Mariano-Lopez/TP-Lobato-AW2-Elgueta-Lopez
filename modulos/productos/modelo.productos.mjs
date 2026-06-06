@@ -30,7 +30,7 @@ export async function obtenerUno(id, categoria) {
 }
 
 export async function crearUno(datos, categoria) {
-    const resultado = await pool.query(`INSERT INTO ${categoria}(nombre, precio, categoria) VALUES($1, $2, $3) RETURNING id, nombre, precio, categoria`, [datos.nombre, datos.precio, datos.categoria])
+    const resultado = await pool.query(`INSERT INTO ${categoria}(nombre, precio, categoria) VALUES($1, $2, $3) RETURNING id`)
 
     return resultado.rows
 }

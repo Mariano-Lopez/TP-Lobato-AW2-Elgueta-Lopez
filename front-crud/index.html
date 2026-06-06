@@ -3,19 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD - Subir Archivo con Multer</title>
+    <link rel="stylesheet" href="./recursos/css/index.css" />
+    <script type="module" src="./recursos/js/index.mjs"></script>
+    <title>Administración - CRUD</title>
 </head>
 
 <body>
-    <!-- Si no ponemos el dominio, el navegador asume que es el mismo desde donde se sirve la web -->
-    <form action="/api/v1/productos" method="post" enctype="multipart/form-data">
-        <input type="text" name="nombre" id="">
-        <input type="text" name="" id="precio">
-        <input type="text" name="categoria" id="">
+    <main>
+        <p class="page-title">Administración — CRUD de productos</p>
 
-        <input type="file" name="archivo" id="">
-        <button type="submit">Subir</button>
-    </form>
+        <div class="operation-bar">
+            <label>Tipo de operación:</label>
+
+            <div class="op-buttons">
+               <button class="op-btn insert active" data-op="insert">Insertar</button>
+               <button class="op-btn update" data-op="update">Modificar</button>
+               <button class="op-btn read" data-op="read">Consultar</button>
+               <button class="op-btn delete" data-op="delete">Eliminar</button>
+            </div>
+
+            <div style="margin-left: auto;">
+                <label for="categoriaTabla">Tabla:</label>
+                <select id="categoriaTabla" style="font-family: monospace; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--border);">
+                    <option value="Pizza">Pizza</option>
+                    <option value="Empanada">Empanada</option>
+                    <option value="Bebida">Bebida</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-panel">
+            <div class="form-panel-header">
+                <div class="op-indicator" id="opIndicator"></div>
+                <h2 id="panelTitle">Ingresar nuevo producto</h2>
+            </div>
+
+            <div class="form-body">
+                <div class="field-row" id="row-id">
+                    <label for="idProducto">Id Producto <span class="required" id="idRequired">*</span></label>
+                    <input type="number" id="idProducto" placeholder="Ingresar ID de producto..." min="1" />
+                </div>
+
+                <div class="field-row" id="row-nombre">
+                    <label for="nombreProducto">Nombre Producto <span class="required">*</span></label>
+                    <input type="text" id="nombreProducto" placeholder="Ingresar nombre de producto..." />
+                </div>
+
+                <div class="field-row" id="row-precio">
+                    <label for="precioProducto">Precio Producto <span class="required">*</span></label>
+                    <input type="number" id="precioProducto" placeholder="Ingresar precio de producto..." min="0" step="1.00" />
+                </div>
+
+                <div class="field-row" id="row-categoria">
+                    <label for="categoriaProducto">Categoría <span class="required">*</span></label>
+                    <div class="select-wrapper">
+                    <select id="categoriaProducto">
+                        <option value="" disabled selected>Seleccionar categoría...</option>
+                        <option value="Pizza">Pizza</option>
+                        <option value="Empanada">Empanada</option>
+                        <option value="Bebida">Bebida</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field-row" id="row-imagen">
+                <label>Imagen del producto</label>
+                <div class="file-upload-area" id="uploadArea">
+                <input type="file" id="imagenProducto" accept="image/*" />
+                <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                <img class="img-preview" id="imgPreview" alt="Vista previa" />
+                <span class="upload-label" id="uploadLabel">Seleccionar imagen</span>
+                <span class="upload-hint">JPG, PNG, WEBP — max 5 MB</span>
+                </div>
+            </div>
+            </div>
+
+            <div class="delete-warning" id="deleteWarning">
+            ⚠️ Esta acción eliminará el producto permanentemente. No se puede deshacer.
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="form-footer">
+            <span class="hint-text" id="footerHint">* Campos requeridos</span>
+            <button class="btn-confirm" id="btnConfirm">Confirmar</button>
+            </div>
+        </div>
+
+
+
+       <!-- Si no ponemos el dominio, el navegador asume que es el mismo desde donde se sirve la web -->
+       <!-- <form action="/api/v1/productos" method="post" enctype="multipart/form-data">
+           <input type="text" name="nombre" id="nombre">
+           <input type="text" name="precio" id="precio">
+           <input type="text" name="categoria" id="categoria">
+    
+           <input type="file" name="archivo" id="archivo">
+           <button type="submit">Subir</button>
+       </form> -->
+    </main>
+
 </body>
 
 </html>

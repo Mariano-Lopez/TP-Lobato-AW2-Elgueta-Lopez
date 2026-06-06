@@ -20,15 +20,13 @@ app.use(rutasModuloProductos)
 
 
 // Front Web
-app.use(express.static(path.resolve('./front')))
+app.use(express.static(path.resolve('./front-web')))
 
 // Vinculamos el front
 app.use('/admin', express.static(path.resolve('./front-crud')))
 
 // Configuramos carpeta para servir achivos
 app.use('/archivos', express.static(path.resolve('./archivos')))
-
-//app.use(express.static(path.resolve('front')))
 
 app.listen(puerto, () => {
   console.log(`Servidor escuchando en http://localhost:${puerto}`)
