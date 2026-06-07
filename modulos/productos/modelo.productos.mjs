@@ -2,20 +2,19 @@ import pool from '../../bbdd/conexion-bd.mjs'
 
 export async function obtenerCarta(){
     const resultado = await pool.query(`
-        SELECT id, nombre, precio, categoria, 'Pizza' as origen FROM Pizza
+        SELECT id, nombre, precio, categoria, imagen, 'Pizza' as origen FROM Pizza
         UNION ALL
-        SELECT id, nombre, precio, categoria, 'Empanada' as origen FROM Empanada
+        SELECT id, nombre, precio, categoria, imagen, 'Empanada' as origen FROM Empanada
         UNION ALL
-        SELECT id, nombre, precio, categoria, 'Bebida' as origen FROM Bebida
+        SELECT id, nombre, precio, categoria, imagen, 'Bebida' as origen FROM Bebida
         ORDER BY precio DESC
     `)
 
     return resultado.rows
 }
 
-// GET
 export async function obtenerTodos(categoria){
-    const resultado = await pool.query(`SELECT * FROM ${categoria}`) // devuelve promesa
+    const resultado = await pool.query(`SELECT * FROM ${categoria}`)
     
     return resultado
 }

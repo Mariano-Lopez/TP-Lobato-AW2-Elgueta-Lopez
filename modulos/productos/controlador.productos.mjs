@@ -16,7 +16,6 @@ export async function obtenerCarta(req, res){
     res.json(respuesta)
 }
 
-// GET
 export async function obtenerTodos(req, res){
     // Obtener consulta a BD desde capa modelo
     const respuesta = await modelo.obtenerTodos(req.params.categoria)
@@ -33,7 +32,6 @@ export async function obtenerTodos(req, res){
     res.json(respuestaDatos)
 }
 
-// GET
 export async function obtenerUno(req, res) {
     const id = req.params.id
     const categoria = req.params.categoria
@@ -44,6 +42,7 @@ export async function obtenerUno(req, res) {
     console.log('--------------------------------------')
     console.log(producto)
     console.log('--------------------------------------')
+
     if(producto.length > 0){
         res.json(producto)
     }
@@ -75,7 +74,6 @@ export async function crearUno(req, res) {
         }
 
         const respuesta = await modelo.crearUno(datos, req.body.categoria)
-        // crearUno(datos)
 
         res.status(201).json({mensaje: "Registro creado"})
     })

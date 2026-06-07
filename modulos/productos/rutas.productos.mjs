@@ -22,5 +22,4 @@ rutasProductos.delete('/api/v1/productos/:categoria/:id', controlador.borrarUno)
 rutasProductos.put('/api/v1/productos/:categoria/:id', controlador.actualizarUno)
 
 
-
 export default rutasProductos
