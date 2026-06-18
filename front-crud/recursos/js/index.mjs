@@ -179,8 +179,6 @@ function clearForm() {
   }
   if (dom.imagenProducto) dom.imagenProducto.value = '';
   resetUploadArea();
-  const rowProd = document.getElementById('row-producto');
-  if (rowProd) rowProd.style.display = 'none';
   clearReadResult();
 }
 
@@ -241,17 +239,17 @@ function showReadResult(prod) {
     return;
   }
 
-  const imageHtml = prod.imagen ? `<div class="read-result-image" style="margin-top:0.75rem;"><img src="${prod.imagen}" alt="Imagen de ${prod.nombre}" style="max-width:100%; height:auto; display:block; border-radius:10px;" /></div>` : '';
-  dom.readResult.innerHTML = `
-    <div class="read-result-content">
-      <p><strong>Id de producto:</strong> ${prod.id ?? ''}</p>
-      <p><strong>Nombre:</strong> ${prod.nombre ?? ''}</p>
-      <p><strong>Precio:</strong> $${prod.precio ?? ''}</p>
-      <p><strong>Categoría:</strong> ${prod.categoria ?? ''}</p>
-    </div>
-    ${imageHtml}
-  `;
-  dom.readResult.style.display = 'block';
+  // const imageHtml = prod.imagen ? `<div class="read-result-image" style="margin-top:0.75rem;"><img src="${prod.imagen}" alt="Imagen de ${prod.nombre}" style="max-width:100%; height:auto; display:block; border-radius:10px;" /></div>` : '';
+  // dom.readResult.innerHTML = `
+  //   <div class="read-result-content">
+  //     <p><strong>Id de producto:</strong> ${prod.id ?? ''}</p>
+  //     <p><strong>Nombre:</strong> ${prod.nombre ?? ''}</p>
+  //     <p><strong>Precio:</strong> $${prod.precio ?? ''}</p>
+  //     <p><strong>Categoría:</strong> ${prod.categoria ?? ''}</p>
+  //   </div>
+  //   ${imageHtml}
+  // `;
+  // dom.readResult.style.display = 'block';
 }
 
 function reorderForUpdate() {
@@ -408,12 +406,7 @@ async function handleSubmit() {
       document.getElementById('nombreProducto').value = body.nombre || '';
       document.getElementById('precioProducto').value = body.precio || '';
       document.getElementById('categoriaProducto').value = body.categoria || '';
-      if (body.imagen) {
-        dom.imgPreview.src = body.imagen;
-        dom.imgPreview.classList.add('visible');
-        dom.uploadArea.classList.add('has-file');
-        dom.uploadLabel.textContent = body.imagen;
-      }
+      showReadResult(body);
       showFeedback(formatProduct(body), true);
       return;
     }

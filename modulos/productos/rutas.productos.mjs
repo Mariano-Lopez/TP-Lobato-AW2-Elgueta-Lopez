@@ -12,9 +12,6 @@ rutasProductos.get('/api/v1/productos/categoria/:categoria', controlador.obtener
 // Obtener un producto por id
 rutasProductos.get('/api/v1/productos/:id', controlador.obtenerUno)
 
-// Mantener compatibilidad con la ruta antigua de producto por categoria e id
-rutasProductos.get('/api/v1/productos/:categoria/:id', controlador.obtenerUno)
-
 // Crear un producto
 rutasProductos.post('/api/v1/productos', controlador.crearUno)
 
@@ -23,12 +20,5 @@ rutasProductos.delete('/api/v1/productos/:id', controlador.borrarUno)
 
 // Actualizar un producto por id
 rutasProductos.put('/api/v1/productos/:id', controlador.actualizarUno)
-
-// Mantener compatibilidad con la ruta antigua de actualización por categoria e id
-rutasProductos.put('/api/v1/productos/:categoria/:id', controlador.actualizarUno)
-
-// Mantener compatibilidad con la ruta antigua de borrado por categoria e id
-rutasProductos.delete('/api/v1/productos/:categoria/:id', controlador.borrarUno)
-
 
 export default rutasProductos
