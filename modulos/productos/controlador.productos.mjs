@@ -97,23 +97,17 @@ export async function actualizarUno(req, res) {
         try {
             const producto = await modelo.actualizarUno(id, datos)
             if (producto != null){
-                res.json({mensaje: 'Producto actualizado correctamente.', producto})
+                return res.json({mensaje: 'Producto actualizado correctamente.', producto})
             }
             else{
-                res.status(404).json({mensaje: 'Producto no encontrado.'})
+                return res.status(404).json({mensaje: 'Producto no encontrado.'})
             }
         } catch (err) {
-            res.status(400).json({mensaje: err.message})
+            return res.status(400).json({mensaje: err.message})
         }
     })
-}
 
-    if (producto != null){
-        res.json({mensaje: 'Producto actualizado correctamente.'})
-    }
-    else{
-        res.status(500).json({mensaje: 'Producto no encontrado.'})
-    }
+
 
 }
 

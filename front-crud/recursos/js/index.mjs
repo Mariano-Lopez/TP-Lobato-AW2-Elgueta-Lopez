@@ -19,20 +19,20 @@ const opConfig = {
     btnLabel: 'Guardar cambios',
     btnClass: 'op-update',
     indicatorColor: '#1a5c7a',
-    showFields: ['row-id', 'row-nombre', 'row-precio', 'row-categoria', 'row-imagen'],
+    showFields: ['row-categoria', 'row-producto'],
     idLabel: 'Id Producto a modificar',
-    idRequired: true,
-    footerHint: '* Completá solo los campos a cambiar',
+    idRequired: false,
+    footerHint: 'Seleccioná categoría y producto para cargar los datos',
   },
   read: {
     title: 'Consultar producto',
     btnLabel: 'Buscar',
     btnClass: 'op-read',
     indicatorColor: '#1a7a4a',
-    showFields: ['row-categoria','row-producto','row-precio','row-id'],
+    showFields: ['row-categoria', 'row-producto'],
     idLabel: 'Id Producto',
-    idRequired: true,
-    footerHint: 'Seleccioná categoría y producto para obtener su ID o ingresá directamente el ID',
+    idRequired: false,
+    footerHint: 'Seleccioná categoría y producto para buscar',
   },
   delete: {
     title: 'Eliminar producto',
@@ -59,6 +59,7 @@ const dom = {
   uploadLabel: document.getElementById('uploadLabel'),
   imagenProducto: document.getElementById('imagenProducto'),
   productoSelect: document.getElementById('productoSelect'),
+  readResult: document.getElementById('readResult'),
 };
 
 // Guardar orden original de campos para restaurar cuando no estamos en 'read'
@@ -120,13 +121,23 @@ window.setOperation = function(op) {
   saveOriginalOrder();
   if (op === 'read') {
     reorderForRead();
-    // deshabilitar inputs para solo visualización
     const idIn = document.getElementById('idProducto');
     const precioIn = document.getElementById('precioProducto');
     if (idIn) idIn.disabled = true;
     if (precioIn) precioIn.disabled = true;
+    hideUpdateFields();
+    clearReadResult();
+  } else if (op === 'update') {
+    restoreOriginalOrder();
+    reorderForUpdate();
+    const idIn = document.getElementById('idProducto');
+    const precioIn = document.getElementById('precioProducto');
+    if (idIn) idIn.disabled = false;
+    if (precioIn) precioIn.disabled = false;
+    hideUpdateFields();
+    const rowProd = document.getElementById('row-producto');
+    if (rowProd) rowProd.style.display = 'grid';
   } else {
-    // restaurar y habilitar campos
     restoreOriginalOrder();
     const idIn = document.getElementById('idProducto');
     const precioIn = document.getElementById('precioProducto');
@@ -143,9 +154,17 @@ window.setOperation = function(op) {
   // Mostrar advertencia solo si es eliminación
   dom.deleteWarning.classList.toggle('visible', op === 'delete');
 
+  // Limpiar el feedback anterior
+  clearFeedback();
+
   // Limpiar formulario
   clearForm();
 };
+
+function clearFeedback() {
+  dom.feedback.textContent = '';
+  dom.feedback.classList.remove('visible');
+}
 
 // Limpiar todos los campos
 function clearForm() {
@@ -160,6 +179,9 @@ function clearForm() {
   }
   if (dom.imagenProducto) dom.imagenProducto.value = '';
   resetUploadArea();
+  const rowProd = document.getElementById('row-producto');
+  if (rowProd) rowProd.style.display = 'none';
+  clearReadResult();
 }
 
 // Resetear el área de subida de imagen
@@ -206,9 +228,79 @@ function formatProduct(prod) {
   return `${id ? '#' + id + ' - ' : ''}${nombre} — $${precio}${categoria ? ' (' + categoria + ')' : ''}`;
 }
 
+function clearReadResult() {
+  if (!dom.readResult) return;
+  dom.readResult.innerHTML = '';
+  dom.readResult.style.display = 'none';
+}
+
+function showReadResult(prod) {
+  if (!dom.readResult) return;
+  if (!prod) {
+    clearReadResult();
+    return;
+  }
+
+  const imageHtml = prod.imagen ? `<div class="read-result-image" style="margin-top:0.75rem;"><img src="${prod.imagen}" alt="Imagen de ${prod.nombre}" style="max-width:100%; height:auto; display:block; border-radius:10px;" /></div>` : '';
+  dom.readResult.innerHTML = `
+    <div class="read-result-content">
+      <p><strong>Id de producto:</strong> ${prod.id ?? ''}</p>
+      <p><strong>Nombre:</strong> ${prod.nombre ?? ''}</p>
+      <p><strong>Precio:</strong> $${prod.precio ?? ''}</p>
+      <p><strong>Categoría:</strong> ${prod.categoria ?? ''}</p>
+    </div>
+    ${imageHtml}
+  `;
+  dom.readResult.style.display = 'block';
+}
+
+function reorderForUpdate() {
+  const container = document.querySelector('.form-body');
+  if (!container) return;
+  const desired = ['row-categoria', 'row-producto', 'row-nombre', 'row-precio', 'row-imagen'];
+  for (let i = desired.length - 1; i >= 0; i--) {
+    const el = document.getElementById(desired[i]);
+    if (el) container.insertBefore(el, container.firstChild);
+  }
+}
+
+function hideUpdateFields() {
+  const updateFields = ['row-nombre', 'row-precio', 'row-imagen'];
+  updateFields.forEach(id => {
+    const row = document.getElementById(id);
+    if (row) row.style.display = 'none';
+  });
+}
+
+function showUpdateFields(producto) {
+  const nombreRow = document.getElementById('row-nombre');
+  const precioRow = document.getElementById('row-precio');
+  const imagenRow = document.getElementById('row-imagen');
+
+  if (nombreRow) nombreRow.style.display = 'grid';
+  if (precioRow) precioRow.style.display = 'grid';
+  if (imagenRow) imagenRow.style.display = 'grid';
+  reorderForUpdate();
+
+  if (producto) {
+    document.getElementById('nombreProducto').value = producto.nombre || '';
+    document.getElementById('precioProducto').value = producto.precio ?? '';
+    document.getElementById('categoriaProducto').value = producto.categoria || document.getElementById('categoriaProducto').value;
+    resetUploadArea();
+  }
+}
+
 // Cargar productos de una categoría y poblar el combobox
 async function cargarProductosPorCategoria(categoria) {
   if (!categoria || !dom.productoSelect) return;
+
+  if (currentOp === 'insert') {
+    const row = document.getElementById('row-producto');
+    if (row) row.style.display = 'none';
+    dom.productoSelect.innerHTML = '<option value="" disabled selected>Seleccionar producto...</option>';
+    return;
+  }
+
   try {
     const res = await fetch(`${API_BASE}/categoria/${encodeURIComponent(categoria)}`);
     if (!res.ok) throw new Error('Error al obtener productos');
@@ -218,11 +310,8 @@ async function cargarProductosPorCategoria(categoria) {
       const opt = document.createElement('option');
       opt.value = p.id;
       opt.textContent = p.nombre;
-      // guardar precio en dataset para rellenar al seleccionar
-      if (p.precio !== undefined) opt.dataset.precio = p.precio;
       dom.productoSelect.appendChild(opt);
     });
-    // asegurar que el row esté visible si estamos en read
     const row = document.getElementById('row-producto');
     if (row) row.style.display = 'grid';
   } catch (err) {
@@ -230,16 +319,31 @@ async function cargarProductosPorCategoria(categoria) {
   }
 }
 
-// Cuando se selecciona un producto, rellenar el campo de ID y precio
-function handleProductoSelectChange() {
+// Cuando se selecciona un producto, rellenar el campo de ID y cargar los datos en modificar
+async function handleProductoSelectChange() {
   if (!dom.productoSelect) return;
   const val = dom.productoSelect.value;
-  document.getElementById('idProducto').value = val || '';
-  const selected = dom.productoSelect.options[dom.productoSelect.selectedIndex];
-  if (selected && selected.dataset && selected.dataset.precio !== undefined) {
-    document.getElementById('precioProducto').value = selected.dataset.precio;
-  } else {
-    document.getElementById('precioProducto').value = '';
+  const idInput = document.getElementById('idProducto');
+  if (idInput) idInput.value = val || '';
+
+  if (currentOp === 'update') {
+    if (!val) {
+      hideUpdateFields();
+      return;
+    }
+    try {
+      const res = await fetch(`${API_BASE}/${encodeURIComponent(val)}`);
+      if (!res.ok) throw new Error('No se pudo cargar el producto');
+      const producto = await res.json();
+      showUpdateFields(producto);
+    } catch (err) {
+      showFeedback(err.message, false);
+    }
+    return;
+  }
+
+  if (currentOp === 'read') {
+    clearReadResult();
   }
 }
 
@@ -269,7 +373,7 @@ async function handleSubmit() {
 
     if (currentOp === 'update') {
       if (!idVal) {
-        showFeedback('Ingresá el ID del producto.', false);
+        showFeedback('Seleccioná un producto para actualizar.', false);
         return;
       }
       if (!nombre && !precio && !categoria && (!dom.imagenProducto || !dom.imagenProducto.files[0])) {
@@ -281,7 +385,7 @@ async function handleSubmit() {
 
     if (currentOp === 'read') {
       if (!idVal) {
-        showFeedback('Ingresá el ID del producto.', false);
+        showFeedback('Seleccioná un producto antes de buscar.', false);
         return;
       }
       response = await fetch(`${API_BASE}/${idVal}`);
@@ -358,7 +462,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (categoriaSel) {
     categoriaSel.addEventListener('change', (e) => {
       const cat = e.target.value;
-      cargarProductosPorCategoria(cat);
+      if (currentOp === 'insert') {
+        const row = document.getElementById('row-producto');
+        if (row) row.style.display = 'none';
+        if (dom.productoSelect) dom.productoSelect.innerHTML = '<option value="" disabled selected>Seleccionar producto...</option>';
+        clearReadResult();
+      } else {
+        cargarProductosPorCategoria(cat);
+      }
     });
   }
 

@@ -56,10 +56,10 @@ export async function actualizarUno(id, datos) {
 
     validarCategoria(categoria)
 
-    await pool.query(
-        'UPDATE carta SET nombre = $1, precio = $2, categoria = $3, imagen = $4 WHERE id = $5',
+    const actualizacion = await pool.query(
+        'UPDATE carta SET nombre = $1, precio = $2, categoria = $3, imagen = $4 WHERE id = $5 RETURNING *',
         [nombre, precio, categoria, imagen, idProducto]
     )
 
-    return actual
+    return actualizacion.rows[0]
 }
