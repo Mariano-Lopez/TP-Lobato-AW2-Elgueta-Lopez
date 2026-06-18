@@ -1,69 +1,65 @@
 import pool from '../../bbdd/conexion-bd.mjs'
 
-export async function obtenerCarta(){
-    const resultado = await pool.query(`
-        SELECT id, nombre, precio, categoria, imagen, 'Pizza' as origen FROM Pizza
-        UNION ALL
-        SELECT id, nombre, precio, categoria, imagen, 'Empanada' as origen FROM Empanada
-        UNION ALL
-        SELECT id, nombre, precio, categoria, imagen, 'Bebida' as origen FROM Bebida
-        ORDER BY precio DESC
-    `)
+const categoriasValidas = new Set(['Pizza', 'Empanada', 'Bebida'])
 
+function validarCategoria(categoria) {
+    if (!categoriasValidas.has(categoria)) {
+        throw new Error('Categoría inválida')
+    }
+}
+
+export async function obtenerCarta(){
+    const resultado = await pool.query('SELECT * FROM carta ORDER BY precio DESC')
     return resultado.rows
 }
 
 export async function obtenerTodos(categoria){
-    const resultado = await pool.query(`SELECT * FROM ${categoria}`)
-    
+    validarCategoria(categoria)
+    const resultado = await pool.query('SELECT * FROM carta WHERE categoria = $1 ORDER BY precio DESC', [categoria])
     return resultado
 }
 
-export async function obtenerUno(id, categoria) {
-    
+export async function obtenerUno(id) {
     const idProducto = Number(id)
-
-    const resultado = await pool.query(`SELECT * FROM ${categoria} WHERE id =$1`, [idProducto])
-
+    const resultado = await pool.query('SELECT * FROM carta WHERE id = $1', [idProducto])
     return resultado.rows
 }
 
-export async function crearUno(datos, categoria) {
-    const resultado = await pool.query(`INSERT INTO ${categoria}(nombre, precio, categoria) VALUES($1, $2, $3) RETURNING id`)
-
-    return resultado.rows
+export async function crearUno(datos) {
+    validarCategoria(datos.categoria)
+    const resultado = await pool.query(
+        'INSERT INTO carta (nombre, precio, categoria, imagen) VALUES ($1, $2, $3, $4) RETURNING *',
+        [datos.nombre, datos.precio, datos.categoria, datos.imagen]
+    )
+    return resultado.rows[0]
 }
 
-
-export async function borrarUno(id, categoria) {
+export async function borrarUno(id) {
     const idProducto = Number(id)
+    const resultado = await pool.query('DELETE FROM carta WHERE id = $1 RETURNING *', [idProducto])
+    return resultado.rows[0] ?? null
+}
 
-    const resultado = await pool.query(`SELECT * FROM ${categoria} WHERE id =$1`, [idProducto])
+export async function actualizarUno(id, datos) {
+    const idProducto = Number(id)
+    const resultado = await pool.query('SELECT * FROM carta WHERE id = $1', [idProducto])
 
-    if(resultado.rows.length === 0){
-        
+    if (resultado.rows.length === 0) {
         return null
     }
-    else{
-        await pool.query(`DELETE FROM ${categoria} WHERE id =$1`, [idProducto])
-    }
 
-    return resultado.rows
-}
+    const actual = resultado.rows[0]
+    const nombre = datos.nombre ?? actual.nombre
+    const precio = datos.precio !== undefined ? datos.precio : actual.precio
+    const categoria = datos.categoria ?? actual.categoria
+    const imagen = datos.imagen !== undefined ? datos.imagen : actual.imagen
 
-export async function actualizarUno(id, datos, categoria) {
-    const idProducto = Number(id)
-    console.log('M - Linea 44' + idProducto)
+    validarCategoria(categoria)
 
-    const resultado = await pool.query(`SELECT * FROM ${categoria} WHERE id =$1`, [idProducto])
-    console.log('M - Linea 47' + resultado)
+    await pool.query(
+        'UPDATE carta SET nombre = $1, precio = $2, categoria = $3, imagen = $4 WHERE id = $5',
+        [nombre, precio, categoria, imagen, idProducto]
+    )
 
-    if(resultado.rows.length === 0){
-        return null
-    }
-    else{
-        await pool.query(`UPDATE ${categoria} SET nombre=$1, precio=$2, categoria=$3 WHERE id =$4`, [datos.nombre, datos.precio, datos.categoria, idProducto])
-    }
-
-    return resultado.rows
+    return actual
 }

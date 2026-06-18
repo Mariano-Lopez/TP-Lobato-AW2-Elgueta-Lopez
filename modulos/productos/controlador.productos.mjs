@@ -17,87 +17,96 @@ export async function obtenerCarta(req, res){
 }
 
 export async function obtenerTodos(req, res){
-    // Obtener consulta a BD desde capa modelo
-    const respuesta = await modelo.obtenerTodos(req.params.categoria)
-
-    // La respuesta tiene todos los datos de la consulta
-    const respuestaDatos = respuesta.rows
-    /*
-    respuesta:
-        consulta,
-        campos,
-        datos de la tabla (rows) <-- arreglo
-    */
-
-    res.json(respuestaDatos)
+    const categoria = req.params.categoria
+    try {
+        const respuesta = await modelo.obtenerTodos(categoria)
+        res.json(respuesta.rows)
+    } catch (error) {
+        res.status(400).json({mensaje: error.message})
+    }
 }
 
 export async function obtenerUno(req, res) {
-    const id = req.params.id
-    const categoria = req.params.categoria
+    const id = Number(req.params.id)
+    if (Number.isNaN(id)) {
+        return res.status(400).json({mensaje: 'Id inválido'})
+    }
 
-    const producto = await modelo.obtenerUno(id, categoria)
-
-    //const respuesta = 
-    console.log('--------------------------------------')
-    console.log(producto)
-    console.log('--------------------------------------')
+    const producto = await modelo.obtenerUno(id)
 
     if(producto.length > 0){
-        res.json(producto)
+        res.json(producto[0])
     }
     else{
         res.status(404).json({mensaje: 'Producto no encontrado'})
     }
-
-
 }
 
 export async function crearUno(req, res) {
-    // Manejamos el archivo 
     manejarArchivo(req, res, async (error)=> {
-        // Si hay error
-        if (error) return res.status(500).json({mensaje: "Error en el servidor"})
-
-        // Insertar a BBDD
-
-        // Obtener los datos del formulario
-        // Si no
-        console.log(req.file) // <-- nombre de archivo
-        console.log(req.body) // <-- demás datos
+        if (error) return res.status(500).json({mensaje: 'Error en el servidor'})
 
         const datos = {
             nombre: req.body.nombre,
-            precio: req.body.precio,
-            categoria: req.body.categoria
-            // imagen: req.file.originalname
+            precio: Number(req.body.precio),
+            categoria: req.body.categoria,
+            imagen: req.file ? req.file.path : null
         }
 
-        const respuesta = await modelo.crearUno(datos, req.body.categoria)
-
-        res.status(201).json({mensaje: "Registro creado"})
+        try {
+            const producto = await modelo.crearUno(datos)
+            res.status(201).json({mensaje: 'Registro creado', producto})
+        } catch (err) {
+            res.status(400).json({mensaje: err.message})
+        }
     })
 }
 
 export async function borrarUno(req, res){
-    const id = req.params.id
-    const categoria = req.params.categoria
+    const id = Number(req.params.id)
+    if (Number.isNaN(id)) {
+        return res.status(400).json({mensaje: 'Id inválido'})
+    }
 
-    const producto = await modelo.borrarUno(id, categoria)
+    const producto = await modelo.borrarUno(id)
 
     if (producto != null){
         res.json({mensaje: 'Producto eliminado correctamente.'})
     }
     else{
-        res.status(500).json({mensaje: 'Producto no encontrado.'})
+        res.status(404).json({mensaje: 'Producto no encontrado.'})
     }
 }
 
 export async function actualizarUno(req, res) {
-    const id = req.params.id
-    const categoria = req.params.categoria
+    manejarArchivo(req, res, async (error)=> {
+        if (error) return res.status(500).json({mensaje: 'Error en el servidor'})
 
-    const producto = await modelo.actualizarUno(id, req.body, categoria)
+        const id = Number(req.params.id)
+        if (Number.isNaN(id)) {
+            return res.status(400).json({mensaje: 'Id inválido'})
+        }
+
+        const datos = {
+            nombre: req.body.nombre,
+            precio: req.body.precio !== undefined && req.body.precio !== '' ? Number(req.body.precio) : undefined,
+            categoria: req.body.categoria,
+            imagen: req.file ? req.file.path : undefined
+        }
+
+        try {
+            const producto = await modelo.actualizarUno(id, datos)
+            if (producto != null){
+                res.json({mensaje: 'Producto actualizado correctamente.', producto})
+            }
+            else{
+                res.status(404).json({mensaje: 'Producto no encontrado.'})
+            }
+        } catch (err) {
+            res.status(400).json({mensaje: err.message})
+        }
+    })
+}
 
     if (producto != null){
         res.json({mensaje: 'Producto actualizado correctamente.'})

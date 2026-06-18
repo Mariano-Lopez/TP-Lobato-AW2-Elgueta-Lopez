@@ -1,13 +1,15 @@
 // Configuración de la operación activa
 let currentOp = 'insert';
 
+const API_BASE = '/api/v1/productos'
+
 const opConfig = {
   insert: {
     title: 'Ingresar nuevo producto',
     btnLabel: 'Confirmar inserción',
     btnClass: '',
     indicatorColor: '#1a1a1a',
-    showFields: ['row-nombre', 'row-precio', 'row-imagen'],
+    showFields: ['row-nombre', 'row-precio', 'row-categoria', 'row-imagen'],
     idLabel: 'Id Producto',
     idRequired: true,
     footerHint: '* Campos requeridos',
@@ -17,7 +19,7 @@ const opConfig = {
     btnLabel: 'Guardar cambios',
     btnClass: 'op-update',
     indicatorColor: '#1a5c7a',
-    showFields: ['row-id', 'row-nombre', 'row-precio', 'row-imagen'],
+    showFields: ['row-id', 'row-nombre', 'row-precio', 'row-categoria', 'row-imagen'],
     idLabel: 'Id Producto a modificar',
     idRequired: true,
     footerHint: '* Completá solo los campos a cambiar',
@@ -27,10 +29,10 @@ const opConfig = {
     btnLabel: 'Buscar',
     btnClass: 'op-read',
     indicatorColor: '#1a7a4a',
-    showFields: ['row-id'],
+    showFields: ['row-categoria','row-producto','row-precio','row-id'],
     idLabel: 'Id Producto',
     idRequired: true,
-    footerHint: 'Ingresá el ID del producto a consultar',
+    footerHint: 'Seleccioná categoría y producto para obtener su ID o ingresá directamente el ID',
   },
   delete: {
     title: 'Eliminar producto',
@@ -56,7 +58,40 @@ const dom = {
   imgPreview: document.getElementById('imgPreview'),
   uploadLabel: document.getElementById('uploadLabel'),
   imagenProducto: document.getElementById('imagenProducto'),
+  productoSelect: document.getElementById('productoSelect'),
 };
+
+// Guardar orden original de campos para restaurar cuando no estamos en 'read'
+let _originalOrder = null;
+function saveOriginalOrder() {
+  if (_originalOrder) return;
+  const container = document.querySelector('.form-body');
+  if (!container) return;
+  _originalOrder = Array.from(container.children).map(n => n.id || null);
+}
+
+function restoreOriginalOrder() {
+  if (!_originalOrder) return;
+  const container = document.querySelector('.form-body');
+  if (!container) return;
+  _originalOrder.forEach(id => {
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (el) container.appendChild(el);
+  });
+}
+
+function reorderForRead() {
+  const container = document.querySelector('.form-body');
+  if (!container) return;
+  // desired order: categoria, producto, precio, id
+  const desired = ['row-categoria','row-producto','row-precio','row-id'];
+  // insert each desired element at the top in reverse so final order is correct
+  for (let i = desired.length - 1; i >= 0; i--) {
+    const el = document.getElementById(desired[i]);
+    if (el) container.insertBefore(el, container.firstChild);
+  }
+}
 
 // Función para cambiar la operación
 window.setOperation = function(op) {
@@ -75,11 +110,29 @@ window.setOperation = function(op) {
   dom.footerHint.textContent = cfg.footerHint;
 
   // Mostrar/ocultar filas del formulario
-  const allRows = ['row-id', 'row-nombre', 'row-precio', 'row-categoria', 'row-imagen'];
+  const allRows = ['row-id', 'row-nombre', 'row-precio', 'row-categoria', 'row-producto', 'row-imagen'];
   allRows.forEach(rowId => {
     const row = document.getElementById(rowId);
     if (row) row.style.display = cfg.showFields.includes(rowId) ? 'grid' : 'none';
   });
+
+  // Reordenar campos cuando estamos en modo 'read'
+  saveOriginalOrder();
+  if (op === 'read') {
+    reorderForRead();
+    // deshabilitar inputs para solo visualización
+    const idIn = document.getElementById('idProducto');
+    const precioIn = document.getElementById('precioProducto');
+    if (idIn) idIn.disabled = true;
+    if (precioIn) precioIn.disabled = true;
+  } else {
+    // restaurar y habilitar campos
+    restoreOriginalOrder();
+    const idIn = document.getElementById('idProducto');
+    const precioIn = document.getElementById('precioProducto');
+    if (idIn) idIn.disabled = false;
+    if (precioIn) precioIn.disabled = false;
+  }
 
   // Cambiar etiqueta del ID
   const idLabel = document.querySelector('#row-id label');
@@ -101,6 +154,10 @@ function clearForm() {
   document.getElementById('precioProducto').value = '';
   const categoriaSelect = document.getElementById('categoriaProducto');
   if (categoriaSelect) categoriaSelect.selectedIndex = 0;
+  if (dom.productoSelect) {
+    dom.productoSelect.innerHTML = '<option value="" disabled selected>Seleccionar producto...</option>';
+    dom.productoSelect.selectedIndex = 0;
+  }
   if (dom.imagenProducto) dom.imagenProducto.value = '';
   resetUploadArea();
 }
@@ -139,41 +196,130 @@ function showFeedback(msg, success) {
   dom.feedback.classList.add('visible');
 }
 
-// Envío del formulario (aquí conectarás con tu API real)
-function handleSubmit() {
-  const cfg = opConfig[currentOp];
-  const idVal = document.getElementById('idProducto').value.trim();
+// Formatea un producto para mostrar en el feedback
+function formatProduct(prod) {
+  if (!prod) return '';
+  const id = prod.id ?? prod.ID ?? '';
+  const nombre = prod.nombre ?? prod.nombre_producto ?? '';
+  const precio = prod.precio !== undefined ? Number(prod.precio) : '';
+  const categoria = prod.categoria ?? '';
+  return `${id ? '#' + id + ' - ' : ''}${nombre} — $${precio}${categoria ? ' (' + categoria + ')' : ''}`;
+}
 
-  if (!idVal) {
-    showFeedback('Por favor ingresá el ID del producto.', false);
-    return;
+// Cargar productos de una categoría y poblar el combobox
+async function cargarProductosPorCategoria(categoria) {
+  if (!categoria || !dom.productoSelect) return;
+  try {
+    const res = await fetch(`${API_BASE}/categoria/${encodeURIComponent(categoria)}`);
+    if (!res.ok) throw new Error('Error al obtener productos');
+    const lista = await res.json();
+    dom.productoSelect.innerHTML = '<option value="" disabled selected>Seleccionar producto...</option>';
+    lista.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = p.nombre;
+      // guardar precio en dataset para rellenar al seleccionar
+      if (p.precio !== undefined) opt.dataset.precio = p.precio;
+      dom.productoSelect.appendChild(opt);
+    });
+    // asegurar que el row esté visible si estamos en read
+    const row = document.getElementById('row-producto');
+    if (row) row.style.display = 'grid';
+  } catch (err) {
+    showFeedback(err.message, false);
   }
+}
 
-  if (currentOp === 'insert') {
-    const nombre = document.getElementById('nombreProducto').value.trim();
-    const precio = document.getElementById('precioProducto').value.trim();
-    const cat = document.getElementById('categoriaProducto').value;
-    if (!nombre || !precio || !cat) {
-      showFeedback('Completá todos los campos requeridos.', false);
+// Cuando se selecciona un producto, rellenar el campo de ID y precio
+function handleProductoSelectChange() {
+  if (!dom.productoSelect) return;
+  const val = dom.productoSelect.value;
+  document.getElementById('idProducto').value = val || '';
+  const selected = dom.productoSelect.options[dom.productoSelect.selectedIndex];
+  if (selected && selected.dataset && selected.dataset.precio !== undefined) {
+    document.getElementById('precioProducto').value = selected.dataset.precio;
+  } else {
+    document.getElementById('precioProducto').value = '';
+  }
+}
+
+// Envío del formulario (conexión real a la API)
+async function handleSubmit() {
+  const idVal = document.getElementById('idProducto').value.trim();
+  const nombre = document.getElementById('nombreProducto').value.trim();
+  const precio = document.getElementById('precioProducto').value.trim();
+  const categoria = document.getElementById('categoriaProducto').value;
+  const formData = new FormData();
+
+  if (nombre) formData.append('nombre', nombre);
+  if (precio) formData.append('precio', precio);
+  if (categoria) formData.append('categoria', categoria);
+  if (dom.imagenProducto && dom.imagenProducto.files[0]) formData.append('archivo', dom.imagenProducto.files[0]);
+
+  try {
+    let response;
+
+    if (currentOp === 'insert') {
+      if (!nombre || !precio || !categoria) {
+        showFeedback('Completá todos los campos requeridos.', false);
+        return;
+      }
+      response = await fetch(API_BASE, { method: 'POST', body: formData });
+    }
+
+    if (currentOp === 'update') {
+      if (!idVal) {
+        showFeedback('Ingresá el ID del producto.', false);
+        return;
+      }
+      if (!nombre && !precio && !categoria && (!dom.imagenProducto || !dom.imagenProducto.files[0])) {
+        showFeedback('Ingresá al menos un campo para actualizar.', false);
+        return;
+      }
+      response = await fetch(`${API_BASE}/${idVal}`, { method: 'PUT', body: formData });
+    }
+
+    if (currentOp === 'read') {
+      if (!idVal) {
+        showFeedback('Ingresá el ID del producto.', false);
+        return;
+      }
+      response = await fetch(`${API_BASE}/${idVal}`);
+    }
+
+    if (currentOp === 'delete') {
+      if (!idVal) {
+        showFeedback('Ingresá el ID del producto.', false);
+        return;
+      }
+      response = await fetch(`${API_BASE}/${idVal}`, { method: 'DELETE' });
+    }
+
+    const body = await response.json();
+    if (!response.ok) {
+      throw new Error(body.mensaje || 'Error en la operación');
+    }
+
+    if (currentOp === 'read') {
+      document.getElementById('nombreProducto').value = body.nombre || '';
+      document.getElementById('precioProducto').value = body.precio || '';
+      document.getElementById('categoriaProducto').value = body.categoria || '';
+      if (body.imagen) {
+        dom.imgPreview.src = body.imagen;
+        dom.imgPreview.classList.add('visible');
+        dom.uploadArea.classList.add('has-file');
+        dom.uploadLabel.textContent = body.imagen;
+      }
+      showFeedback(formatProduct(body), true);
       return;
     }
+
+    const message = body.mensaje || (body.producto ? formatProduct(body.producto) : 'Operación realizada correctamente.');
+    showFeedback(message, true);
+    clearForm();
+  } catch (error) {
+    showFeedback(error.message, false);
   }
-
-  // Simulación de respuestas (reemplazar por fetch real)
-  const mockMessages = {
-    insert: `Producto #${idVal} insertado correctamente.`,
-    update: `Producto #${idVal} actualizado correctamente.`,
-    read: `Consultando producto #${idVal}... (simulado)`,
-    delete: `Producto #${idVal} eliminado correctamente.`,
-  };
-
-  // Aquí iría la llamada a tu backend
-  // Ejemplo: 
-  // if (currentOp === 'insert') fetch('/api/productos', { method: 'POST', body: formData })
-  // if (currentOp === 'read')   fetch(`/api/productos/${idVal}`)
-  // etc.
-
-  showFeedback(mockMessages[currentOp], true);
 }
 
 // Inicializar eventos cuando el DOM esté listo
@@ -206,4 +352,18 @@ document.addEventListener('DOMContentLoaded', () => {
       fileInput.click();
     }
   });
+
+  // Evento para cambio de categoría: cargar productos
+  const categoriaSel = document.getElementById('categoriaProducto');
+  if (categoriaSel) {
+    categoriaSel.addEventListener('change', (e) => {
+      const cat = e.target.value;
+      cargarProductosPorCategoria(cat);
+    });
+  }
+
+  // Evento para selección de producto: llenar ID y precio
+  if (dom.productoSelect) {
+    dom.productoSelect.addEventListener('change', handleProductoSelectChange);
+  }
 });
