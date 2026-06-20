@@ -59,7 +59,7 @@ app.use('/api', (req, res) => {
 
 
 
-// Configuración de rutas para autenticación y registro ---------------------------------------------------------------
+// Configuración de ruta para autenticación ---------------------------------------------------------------
 
 app.post('/autenticar', async (req, res)=>{
     // 1- Obtener datos del formulario
@@ -122,39 +122,6 @@ app.post('/autenticar', async (req, res)=>{
         return res.status(200).redirect('/admin')
     } 
 })
-
-
-app.post('/registrar', async (req, res) => {
-    // 1- Obtener datos del formulario
-    const { usuario, pass } = req.body;
-
-    // 2- Controlar datos incompletos
-    if (!usuario || !pass) {
-        return res.sendStatus(400);
-    }
-
-    // 3- Hashear la contraseña ingresada por el usuario, y guardarlo junto al nombre en la base de datos
-    try {
-        const salt = bcrypt.genSaltSync(10);
-
-        const hashingPass = bcrypt.hashSync(pass, salt);
-
-        const resultado = await pool.query(
-            'INSERT INTO usuarios (username, password_hash) VALUES ($1, $2)',
-            [usuario, hashingPass]
-        );
-
-        if (resultado.rowCount > 0) {
-            res.redirect('/login'); // Redirigimos al usuario a la página de login
-        } else {
-            res.sendStatus(500);
-        }
-    } catch (error) {
-        console.log(error);
-        res.sendStatus(500);
-    }
-});
-
 
 
 app.listen(puerto, () => {

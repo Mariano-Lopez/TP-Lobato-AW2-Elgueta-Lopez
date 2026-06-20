@@ -35,3 +35,7 @@ INSERT INTO carta (nombre, precio, categoria, imagen) VALUES
     ('Fanta 1.5lt', 2000, 'Bebida', '/front-web/recursos/imagenes/productos/Fanta.webp'),
     ('Lata Quilmes 473ml', 2300, 'Bebida', '/front-web/recursos/imagenes/productos/lata-quilmes.webp'),
     ('Schneider 710ml', 2800, 'Bebida', '/front-web/recursos/imagenes/productos/Schneider.webp');
+
+INSERT INTO usuarios (username, password_hash) VALUES
+    ('Mariano-Lopez', '$2b$10$UYVXMC5dE0ZOP1Fs2RPTQuvnWqsAbW9vbhixJ8eL7MepEDxnCmuku'),
+    ('Facundo-Elgueta', '$2b$10$MmR.kNTWW4aqftH2QvviyeJ7CXH7vAxLFP4xCKB1ZZQqW9Xuj6Lji')
