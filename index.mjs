@@ -27,11 +27,11 @@ app.use(rutasModuloProductos)
 
 // ..............................................
 function chequearAcceso(req, res, next){
-    const token = req.signedCookies['token']
+    const token = req.cookies.token
 
     jwt.verify(token, process.env.JWT_FIRMA, function(error, decoded){
         if(error){
-            res.redirect('/login')
+            return res.redirect('/login')
         }
         next()
     })
@@ -122,6 +122,12 @@ app.post('/autenticar', async (req, res)=>{
         return res.status(200).redirect('/admin')
     } 
 })
+
+// Ruta para cerrar sesión --------------------------------------------------------------------------
+app.get('/cerrar-sesion', (req, res) => {
+    res.clearCookie('token');
+    res.redirect('/login');
+});
 
 
 app.listen(puerto, () => {

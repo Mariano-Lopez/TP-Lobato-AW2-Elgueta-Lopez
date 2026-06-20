@@ -37,5 +37,5 @@ INSERT INTO carta (nombre, precio, categoria, imagen) VALUES
     ('Schneider 710ml', 2800, 'Bebida', '/front-web/recursos/imagenes/productos/Schneider.webp');
 
 INSERT INTO usuarios (username, password_hash) VALUES
-    ('Mariano-Lopez', '$2b$10$UYVXMC5dE0ZOP1Fs2RPTQuvnWqsAbW9vbhixJ8eL7MepEDxnCmuku'),
-    ('Facundo-Elgueta', '$2b$10$MmR.kNTWW4aqftH2QvviyeJ7CXH7vAxLFP4xCKB1ZZQqW9Xuj6Lji')
+    ('Mariano-Lopez', '$2b$10$UYVXMC5dE0ZOP1Fs2RPTQuvnWqsAbW9vbhixJ8eL7MepEDxnCmuku'), -- contraseña: admin1
+    ('Facundo-Elgueta', '$2b$10$MmR.kNTWW4aqftH2QvviyeJ7CXH7vAxLFP4xCKB1ZZQqW9Xuj6Lji') -- contraseña: admin2
