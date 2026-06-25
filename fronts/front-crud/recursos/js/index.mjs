@@ -39,10 +39,10 @@ const opConfig = {
     btnLabel: 'Eliminar producto',
     btnClass: 'op-delete',
     indicatorColor: '#c0392b',
-    showFields: ['row-id'],
+    showFields: ['row-categoria', 'row-producto'],
     idLabel: 'Id Producto a eliminar',
-    idRequired: true,
-    footerHint: 'Se eliminará permanentemente',
+    idRequired: false,
+    footerHint: 'Seleccioná categoría y producto para eliminar',
   },
 };
 
@@ -390,11 +390,12 @@ async function handleSubmit() {
     }
 
     if (currentOp === 'delete') {
-      if (!idVal) {
-        showFeedback('Ingresá el ID del producto.', false);
+      const productoId = dom.productoSelect?.value || '';
+      if (!productoId) {
+        showFeedback('Seleccioná un producto para eliminar.', false);
         return;
       }
-      response = await fetch(`${API_BASE}/${idVal}`, { method: 'DELETE' });
+      response = await fetch(`${API_BASE}/${encodeURIComponent(productoId)}`, { method: 'DELETE' });
     }
 
     const body = await response.json();

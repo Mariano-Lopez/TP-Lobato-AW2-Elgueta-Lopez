@@ -53,7 +53,7 @@ app.use('/archivos', express.static(path.resolve('./archivos')))
 
 // Manejo de rutas de API no encontradas para evitar HTML inesperado
 app.use('/api', (req, res) => {
-  res.status(404).json({mensaje: 'Endpoint de API no encontrado'})
+    res.status(404).json({mensaje: 'Endpoint de API no encontrado'})
 })
 
 
