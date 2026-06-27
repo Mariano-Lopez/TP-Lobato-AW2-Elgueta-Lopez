@@ -133,6 +133,28 @@ main {
 .op-btn.active.delete { background: var(--danger); border-color: var(--danger); }
 .op-btn.active.read   { background: var(--success); border-color: var(--success); }
 
+.btn-logout {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-logout:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: rgba(255, 0, 0, 0.05);
+}
+
 .form-panel {
   background: var(--surface);
   border: 1px solid var(--border);
