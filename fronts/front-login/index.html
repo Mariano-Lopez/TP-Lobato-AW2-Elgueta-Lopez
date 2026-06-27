@@ -52,6 +52,16 @@
             button[type='submit']:hover {
                 background: #217dbb;
             }
+            .error-message {
+                display: none;
+                margin-top: 1rem;
+                padding: 0.75rem 1rem;
+                background: #ffe5e5;
+                border: 1px solid #f5a6a6;
+                border-radius: 4px;
+                color: #8b0000;
+                font-weight: 600;
+            }
         </style>
     </head>
     <body>
@@ -80,37 +90,53 @@
             <br />
             <button type="submit">Ingresar</button>
             <br />
+            <div id="error-message" class="error-message" aria-live="polite"></div>
         </form>
         <script>
-            // const form = document.getElementById('form');
-            // form.addEventListener('submit', (event) => {
-            //     event.preventDefault(); // Prevent the form from submitting normally
+            const form = document.getElementById('form');
+            const errorMessageEl = document.getElementById('error-message');
 
-            //     const usuario = document.getElementById('usuario').value;
-            //     const pass = document.getElementById('pass').value;
-            //     // Indicamos la ruta relativa a la raiz del servidor
-            //     // El navegador agrega el dominio y el puerto
-            //     // Por ejemplo: http://localhost:3000/autenticacion
-            //     fetch('/autenticacion', {
-            //         method: 'POST',
-            //         headers: {
-            //             'Content-Type': 'application/json',
-            //         },
-            //         body: JSON.stringify({ usuario, pass }),
-            //     }).then((response) => {
-            //         if (!response.ok) {
-            //             console.log('Error');
-            //             alert('Credenciales no válidas')
-            //             form.reset()
-            //         } else {
-            //             // Si es con fetch hay que redireccionar manualmente
-            //             if (response.redirected) {
-            //                 window.location.href = response.url;
-            //             }
-            //             console.log('datos enviados');
-            //         }
-            //     });
-            // });
+            function showError(message) {
+                errorMessageEl.textContent = message;
+                errorMessageEl.style.display = 'block';
+            }
+
+            function clearError() {
+                errorMessageEl.textContent = '';
+                errorMessageEl.style.display = 'none';
+            }
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+                clearError();
+
+                const usuario = document.getElementById('usuario').value;
+                const pass = document.getElementById('pass').value;
+
+                try {
+                    const response = await fetch('/autenticar', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ usuario, pass }),
+                    });
+
+                    if (!response.ok) {
+                        showError('Usuario y/o contraseña incorrecta');
+                        form.reset();
+                        return;
+                    }
+
+                    if (response.redirected) {
+                        window.location.href = response.url;
+                    } else {
+                        window.location.href = '/admin';
+                    }
+                } catch (error) {
+                    showError('Error de conexión. Intente nuevamente.');
+                }
+            });
         </script>
     </body>
 </html>

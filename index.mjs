@@ -67,7 +67,7 @@ app.post('/autenticar', async (req, res)=>{
 
     // 2- Controlar datos incompletos
     if(!usuario || !pass){
-        return res.status(404).json({
+        return res.status(404)({
             mensaje: "Datos incompletos."
         })
     }
@@ -85,7 +85,7 @@ app.post('/autenticar', async (req, res)=>{
     console.log(resultado.rows)
 
     if (resultado.rowCount === 0){
-        return res.status(404).json({
+        return res.status(404)({
             mensaje: "Usuario no encontrado."
         })
     }
@@ -97,7 +97,7 @@ app.post('/autenticar', async (req, res)=>{
 
     // 5- Si el booleano es false, mostrar mensaje de error, sino, generar cookie y redigir a admin
     if (!validacion){
-        return res.status(404).json({
+        return res.status(404)({
             mensaje: "Contraseña incorrecta."
         })
     }
