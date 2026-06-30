@@ -1,6 +1,6 @@
 import pool from '../../bbdd/conexion-bd.mjs'
 
-const categoriasValidas = new Set(['Pizza', 'Empanada', 'Bebida'])
+const categoriasValidas = new Set(['Pizza', 'Empanada', 'Bebida', 'Promocion'])
 
 function validarCategoria(categoria) {
     if (!categoriasValidas.has(categoria)) {

@@ -1,11 +1,18 @@
 function renderizarProductos(arregloProductos, $refContenedor) {
   let html = ''
   arregloProductos.forEach((producto) => {
+    const imagenSrc = producto.imagen && typeof producto.imagen === 'object'
+      ? producto.imagen.src
+      : producto.imagen || ''
+    const imagenAlt = producto.imagen && typeof producto.imagen === 'object'
+      ? producto.imagen.alt
+      : producto.nombre || 'Producto'
+
     const plantilla = `
         <article>
             <img
-                src="${producto.imagen.src}"
-                alt="${producto.imagen.alt}"
+                src="${imagenSrc}"
+                alt="${imagenAlt}"
             />
             <span>${producto.nombre}</span>
             <p>$${producto.precio}</p>
@@ -48,13 +55,23 @@ function filtrarProductos(todosLosProductos) {
 
 function obtenerProductosJSON(url) {
   return fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      return data[0]
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Error al obtener los productos')
+      }
+      return response.json()
     })
-
+    .then((data) => {
+      if (Array.isArray(data)) return data
+      if (data?.value && Array.isArray(data.value)) {
+        const firstValue = data.value[0]
+        if (firstValue?.promociones) return firstValue.promociones
+        return data.value
+      }
+      return data
+    })
     .catch((error) => {
-      console.error('Error al cargar el archivo JSON:', error)
+      console.error('Error al cargar los productos:', error)
       return []
     })
 }

@@ -40,9 +40,9 @@ const productos = await obtenerProductosJSON(API_PRODUCTOS_URL)
 
 const promociones = await obtenerProductosJSON(API_PROMOCIONES_URL)
 
-renderizarProductos(productos.pizzas.slice(0, 3), $contenedorProductos)
+renderizarProductos(productos.slice(0, 3), $contenedorProductos)
 
-renderizarProductos(promociones.promociones.slice(0, 3), $contenedorPromociones)
+renderizarProductos(promociones.slice(0, 3), $contenedorPromociones)
 
 verTodosProductos($verTodosProductosBtn)
 verTodosProductos($verMasProductosBtn)

@@ -38,22 +38,20 @@ const productos = await obtenerProductosJSON(API_PRODUCTOS_URL)
 
 const promociones = await obtenerProductosJSON(API_PROMOCIONES_URL)
 
-renderizarProductos(productos.pizzas, $contenedorPizzas)
+renderizarProductos(productos.filter((producto) => producto.categoria === 'Pizza'), $contenedorPizzas)
 
-renderizarProductos(productos.empanadas, $contenedorEmpanadas)
+renderizarProductos(productos.filter((producto) => producto.categoria === 'Empanada'), $contenedorEmpanadas)
 
-renderizarProductos(productos.bebidas, $contenedorBebidas)
+renderizarProductos(productos.filter((producto) => producto.categoria === 'Bebida'), $contenedorBebidas)
 
-renderizarProductos(promociones.promociones, $contenedorPromociones)
+renderizarProductos(promociones, $contenedorPromociones)
 
 // --------------------------------------------------------
 // 1) Unir todos los productos en un solo array
 // --------------------------------------------------------
 const todosLosProductos = [
-  ...productos.pizzas,
-  ...productos.empanadas,
-  ...productos.bebidas,
-  ...(promociones.promociones ?? []), // por si después agregan promos
+  ...productos,
+  ...promociones,
 ]
 
 // --------------------------------------------------------
