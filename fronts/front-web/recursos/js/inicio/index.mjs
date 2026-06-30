@@ -40,7 +40,8 @@ const productos = await obtenerProductosJSON(API_PRODUCTOS_URL)
 
 const promociones = await obtenerProductosJSON(API_PROMOCIONES_URL)
 
-renderizarProductos(productos.slice(0, 3), $contenedorProductos)
+const pizzasDestacadas = productos.filter((producto) => producto.categoria === 'Pizza')
+renderizarProductos(pizzasDestacadas.slice(0, 3), $contenedorProductos)
 
 renderizarProductos(promociones.slice(0, 3), $contenedorPromociones)
 
